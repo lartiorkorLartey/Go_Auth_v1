@@ -1,0 +1,82 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the Go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+
+# Build directories
+_build/
+dist/
+vendor/
+
+# Dependency directories (remove the comment below if you use Go vendor)
+# vendor/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Go module files
+go.sum
+
+# Database files
+*.db
+*.sqlite
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Node.js dependencies (if applicable)
+node_modules/
+
+# Docker-related files
+docker-compose.override.yml
+docker-compose.debug.yml
+docker-compose.local.yml
+
+# Compiled object files
+*.o
+*.a
+*.out
+
+# Coverage reports
+coverage/
+*.coverprofile
+*.cov
+*.coverage
+.coverage.*
+
+# Test binary, build and test outputs
+_build/
+_build_test/
+_build_release/
+_test/
+
+# Git-specific files
+*.orig
+.gitignore~
