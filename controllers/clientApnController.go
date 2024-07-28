@@ -7,7 +7,6 @@ import (
 	"authapp.com/m/models"
 	"authapp.com/m/utils"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func GenerateAPN(c *gin.Context) {
@@ -29,16 +28,8 @@ func GenerateAPN(c *gin.Context) {
         return
     }
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(apn), bcrypt.DefaultCost)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Could not generate apn",
-		})
-		return
-	}
-
-    clientModel.APN = string(hash)
+    clientModel.APN = string(apn)
 
     if err := initializers.DB.Save(&clientModel).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not update APN"})
