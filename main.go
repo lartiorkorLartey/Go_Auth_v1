@@ -22,5 +22,9 @@ func main() {
 	r.POST("/client-login", controllers.ClientLogin)
 	r.POST("/generate-apn",middlewares.ClientAuthMiddleware(), controllers.GenerateAPN )
 	r.POST("/invalidate-apn",middlewares.ClientAuthMiddleware(), controllers.InvalidateAPN )
+
+	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
+	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)
+	r.POST("/user/validate", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.ValidateUser)
 	r.Run()
 }
