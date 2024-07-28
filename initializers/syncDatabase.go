@@ -4,5 +4,5 @@ import "authapp.com/m/models"
 
 
 func SyncDatabase() {
-	DB.AutoMigrate(&models.Client{})
+	DB.AutoMigrate(&models.Client{}, &models.User{})
 }
