@@ -4,11 +4,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
     swaggerFiles "github.com/swaggo/files"
 
-	"github.com/InnocentEdem/goauth/controllers"
-	"github.com/InnocentEdem/goauth/initializers"
-	"github.com/InnocentEdem/goauth/middlewares"
+	"github.com/InnocentEdem/Go_Auth_v1/controllers"
+	"github.com/InnocentEdem/Go_Auth_v1/initializers"
+	"github.com/InnocentEdem/Go_Auth_v1/middlewares"
 	"github.com/gin-gonic/gin"
-	_ "github.com/InnocentEdem/goauth/docs" 
+	_ "github.com/InnocentEdem/Go_Auth_v1/docs" 
 
 )
 

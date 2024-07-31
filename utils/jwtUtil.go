@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/InnocentEdem/goauth/models"
+	"github.com/InnocentEdem/Go_Auth_v1/models"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )

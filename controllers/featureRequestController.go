@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/InnocentEdem/goauth/initializers"
-	"github.com/InnocentEdem/goauth/models"
+	"github.com/InnocentEdem/Go_Auth_v1/initializers"
+	"github.com/InnocentEdem/Go_Auth_v1/models"
 	"github.com/gin-gonic/gin"
 )
 

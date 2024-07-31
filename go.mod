@@ -1,4 +1,4 @@
-module github.com/InnocentEdem/goauth
+module github.com/InnocentEdem/Go_Auth_v1
 
 go 1.21.4
 
