@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"authapp.com/m/initializers"
-	"authapp.com/m/models"
-	"authapp.com/m/utils"
+	"github.com/InnocentEdem/goauth/initializers"
+	"github.com/InnocentEdem/goauth/models"
+	"github.com/InnocentEdem/goauth/utils"
 	"github.com/gin-gonic/gin"
 )
 

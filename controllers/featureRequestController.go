@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"authapp.com/m/initializers"
-	"authapp.com/m/models"
+	"github.com/InnocentEdem/goauth/initializers"
+	"github.com/InnocentEdem/goauth/models"
 	"github.com/gin-gonic/gin"
 )
 

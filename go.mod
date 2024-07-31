@@ -1,4 +1,4 @@
-module authapp.com/m
+module github.com/InnocentEdem/goauth
 
 go 1.21.4
 

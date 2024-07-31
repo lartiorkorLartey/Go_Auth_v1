@@ -1,10 +1,11 @@
 package middlewares
 
 import (
-    "authapp.com/m/initializers"
-    "authapp.com/m/models"
-    "net/http"
-    "github.com/gin-gonic/gin"
+	"net/http"
+
+	"github.com/InnocentEdem/goauth/initializers"
+	"github.com/InnocentEdem/goauth/models"
+	"github.com/gin-gonic/gin"
 )
 
 func APNAuthMiddleware() gin.HandlerFunc {

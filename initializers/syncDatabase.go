@@ -1,6 +1,7 @@
 package initializers
 
-import "authapp.com/m/models"
+import "github.com/InnocentEdem/goauth/models"
+
 
 
 func SyncDatabase() {

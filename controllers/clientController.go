@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	"authapp.com/m/initializers"
-	"authapp.com/m/models"
-	"authapp.com/m/utils"
+	"github.com/InnocentEdem/goauth/initializers"
+	"github.com/InnocentEdem/goauth/models"
+	"github.com/InnocentEdem/goauth/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"

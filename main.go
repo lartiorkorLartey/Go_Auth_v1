@@ -4,11 +4,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
     swaggerFiles "github.com/swaggo/files"
 
-	"authapp.com/m/controllers"
-	"authapp.com/m/initializers"
-	"authapp.com/m/middlewares"
+	"github.com/InnocentEdem/goauth/controllers"
+	"github.com/InnocentEdem/goauth/initializers"
+	"github.com/InnocentEdem/goauth/middlewares"
 	"github.com/gin-gonic/gin"
-	_ "authapp.com/m/docs" 
+	_ "github.com/InnocentEdem/goauth/docs" 
 
 )
 
