@@ -27,8 +27,6 @@ vendor/
 go.work
 go.work.sum
 
-# Go module files
-go.sum
 
 # Database files
 *.db
