@@ -15,7 +15,7 @@ import (
 func init(){
 	initializers.LoadEnvironment()
 	initializers.ConnectDB()
-	// initializers.SyncDatabase()
+	initializers.SyncDatabase()
 }
 
 // @title           Swagger Example API
@@ -50,7 +50,7 @@ func main() {
 	r.GET("/all-users",middlewares.ClientAuthMiddleware(), controllers.GetUsersByClient )
 	r.GET("/client-apn",middlewares.ClientAuthMiddleware(), controllers.GetClientAPN )
 	r.POST("/delete-user",middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient )
-	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.HandleFeatureRequest)
+	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
 	
 	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
 	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)
