@@ -59,6 +59,5 @@ func InvalidateAPN(c *gin.Context) {
         return
     }
 
-    // Respond with success message
     c.JSON(http.StatusOK, gin.H{"message": "APN invalidated successfully"})
 }

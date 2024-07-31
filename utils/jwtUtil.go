@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"authapp.com/m/models"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
@@ -13,23 +14,31 @@ import (
 type ClientClaims struct {
     Email string `json:"email"`
 	Role string `json:"role"`
+    FirstName string `json:"firstname"`
+    LastName string `json:"lastname"`
+    Apn string `json:"apn"`
     jwt.RegisteredClaims
 }
 
 type UserClaims struct {
 	Email string `json:"email"`
 	Role string `json:"role"`
+    FirstName string `json:"firstname"`
+    LastName string `json:"lastname"`
 	ClientId uuid.UUID `json:"client"`
     jwt.RegisteredClaims
 }
 var jwtKey = []byte(os.Getenv("JWT_KEY"))
 
 
-func GenerateJWT(email string, role string) (string, error) {
+func GenerateJWT(client models.Client, role string) (string, error) {
     expirationTime := time.Now().Add(2 * time.Hour) 
     claims := &ClientClaims{
-        Email: email,
+        Email: client.Email,
 		Role: role,
+        FirstName: client.FirstName,
+        LastName: client.LastName,
+        Apn: client.APN,
         RegisteredClaims: jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(expirationTime),
         },
@@ -45,12 +54,14 @@ func GenerateJWT(email string, role string) (string, error) {
     return tokenString, nil
 }
 
-func GenerateUserJWT(email string, role string, clientID uuid.UUID) (string, error) {
+func GenerateUserJWT(user models.User, role string) (string, error) {
     expirationTime := time.Now().Add(2 * time.Hour) 
     claims := &UserClaims{
-        Email: email,
+        Email: user.Email,
 		Role: role,
-		ClientId: clientID,
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+		ClientId: user.ClientID,
         RegisteredClaims: jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(expirationTime),
         },
