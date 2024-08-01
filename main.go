@@ -20,7 +20,7 @@ func init(){
 
 // @title           Swagger Example API
 // @version         1.0
-// @description     GateKeeper Pro register and validates users for your frontend.
+// @description     GateKeeper Pro registers and validates users for your frontend.
 // @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support
@@ -30,7 +30,7 @@ func init(){
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      https://go-auth-v1.onrender.com
 // @BasePath  /
 
 // @securityDefinitions.basic  BasicAuth
