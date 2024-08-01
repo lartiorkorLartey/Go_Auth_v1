@@ -51,6 +51,7 @@ func main() {
 	r.GET("/client-apn",middlewares.ClientAuthMiddleware(), controllers.GetClientAPN )
 	r.POST("/delete-user",middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient )
 	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
+	r.POST("/update-password",middlewares.ClientAuthMiddleware(), controllers.ClientUpdatePassword)
 	
 	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
 	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)
