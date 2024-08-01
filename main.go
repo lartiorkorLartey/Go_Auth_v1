@@ -18,7 +18,7 @@ func init(){
 	initializers.SyncDatabase()
 }
 
-// @title           Swagger Example API
+// @title           Gatekeeper Pro API
 // @version         1.0
 // @description     GateKeeper Pro registers and validates users for your frontend.
 // @termsOfService  http://swagger.io/terms/
