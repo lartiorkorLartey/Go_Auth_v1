@@ -42,6 +42,12 @@ func UserSignup(c *gin.Context) {
 		return
 	}
 
+	var existingUser models.User
+	if err := initializers.DB.Where("client_id = ? AND email = ?", clientModel.ID, body.Email).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User with this email already exists"})
+		return
+	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating account"})
