@@ -50,7 +50,7 @@ func main() {
 	r.GET("/client-apn",middlewares.ClientAuthMiddleware(), controllers.GetClientAPN )
 	r.POST("/delete-user",middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient )
 	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
-	r.GET("/config/:id",middlewares.ClientAuthMiddleware(), controllers.GetClientAdvancedConfig)
+	r.GET("/config",middlewares.ClientAuthMiddleware(), controllers.GetClientAdvancedConfig)
 	r.PUT("/config",middlewares.ClientAuthMiddleware(), controllers.UpdateClientAdvancedConfigHandler)
 	r.GET("/client",middlewares.ClientAuthMiddleware(), controllers.GetClient)
 

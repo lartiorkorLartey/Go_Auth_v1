@@ -76,15 +76,38 @@ func UpdateClientAdvancedConfigHandler(c *gin.Context) {
 }
 
 func GetClientAdvancedConfig(c *gin.Context) {
-	clientID := c.Param("id")
+
+	client, exists := c.Get("client")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing client id"})
+		return
+	}
+
+	clientModel, ok := client.(models.Client)
+    if !ok {
+        c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Error retrieving client information"})
+        return
+    }
+
 
 	var clientConfig models.ClientAdvancedConfig
-	if err := initializers.DB.First(&clientConfig, "client_id = ?", clientID).Error; err != nil {
+	if err := initializers.DB.First(&clientConfig, "client_id = ?", clientModel.ID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Client configuration not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, clientConfig)
+	response := ClientAdvancedConfigResponse{
+		ID:                    clientConfig.ID,
+		ClientID:              clientConfig.ClientID,
+		CorsAllowedOrigins:    clientConfig.CorsAllowedOrigins,
+		JWTExpiryTime:         clientConfig.JWTExpiryTime,
+		RefreshTokenEnabled:   clientConfig.RefreshTokenEnabled,
+		RefreshTokenExpiryTime: clientConfig.RefreshTokenExpiryTime,
+		AllowJWTCustomClaims:  clientConfig.AllowJWTCustomClaims,
+		UseAdditionalProperties: clientConfig.UseAdditionalProperties,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 type ClientAdvancedConfigResponse struct {
