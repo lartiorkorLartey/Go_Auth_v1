@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /refresh-token [post]
+// @Router /user/refresh-token [post]
 func RefreshToken(c *gin.Context) {
     var body struct {
         RefreshToken string `json:"refresh_token" binding:"required"`

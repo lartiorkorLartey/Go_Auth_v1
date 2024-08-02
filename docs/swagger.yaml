@@ -171,48 +171,6 @@ info:
   title: Gatekeeper Pro API
   version: "1.0"
 paths:
-  /refresh-token:
-    post:
-      consumes:
-      - application/json
-      description: Refreshes the JWT and optionally the refresh token
-      parameters:
-      - description: Refresh Token
-        in: body
-        name: refresh_token
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: Unauthorized
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Refresh JWT
-      tags:
-      - auth
   /user/login:
     post:
       consumes:
@@ -319,6 +277,48 @@ paths:
       summary: Update user profile
       tags:
       - user profile
+  /user/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Refreshes the JWT and optionally the refresh token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Refresh JWT
+      tags:
+      - auth
   /user/signup:
     post:
       consumes:
