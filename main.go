@@ -17,9 +17,9 @@ func init(){
 	// initializers.SyncDatabase()
 }
 
-// @title           Swagger Example API
+// @title           Gatekeeper Pro API
 // @version         1.0
-// @description     GateKeeper Pro register and validates users for your frontend.
+// @description     GateKeeper Pro registers and validates users for your frontend.
 // @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support
@@ -29,7 +29,7 @@ func init(){
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      https://go-auth-v1.onrender.com
 // @BasePath  /
 
 // @securityDefinitions.basic  BasicAuth
@@ -54,6 +54,7 @@ func main() {
 	r.PUT("/config",middlewares.ClientAuthMiddleware(), controllers.UpdateClientAdvancedConfigHandler)
 	r.GET("/client",middlewares.ClientAuthMiddleware(), controllers.GetClient)
 
+	r.POST("/update-password",middlewares.ClientAuthMiddleware(), controllers.ClientUpdatePassword)
 	
 	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
 	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)

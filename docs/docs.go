@@ -330,11 +330,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "https://go-auth-v1.onrender.com",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "GateKeeper Pro register and validates users for your frontend.",
+	Title:            "Gatekeeper Pro API",
+	Description:      "GateKeeper Pro registers and validates users for your frontend.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
