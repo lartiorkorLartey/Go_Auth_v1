@@ -20,7 +20,6 @@ import (
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /user/profile [get]
-
 func GetUserProfile(c *gin.Context) {
 	client, exists := c.Get("client")
 	if !exists {
