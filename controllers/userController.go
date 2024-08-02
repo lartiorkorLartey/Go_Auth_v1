@@ -10,66 +10,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// UserSignup godoc
-// @Summary User signup
-// @Description Creates a new user account
-// @Tags auth
-// @Accept  json
-// @Produce  json
-// @Param body body UserSignupRequest true "Signup details"
-// @Success 200 {object} UserSignupResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 401 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /user/signup [post]
-func UserSignup(c *gin.Context) {
-    var body UserSignupRequest
-    if err := c.ShouldBindJSON(&body); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Missing or invalid properties in request body"})
-        return
-    }
-
-    client, exists := c.Get("client")
-    if !exists {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing client id"})
-        return
-    }
-
-    clientModel, ok := client.(models.Client)
-    if !ok {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving client information"})
-        return
-    }
-
-    var existingUser models.User
-    if err := initializers.DB.Where("client_id = ? AND email = ?", clientModel.ID, body.Email).First(&existingUser).Error; err == nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "User with this email already exists for this client"})
-        return
-    }
-
-    hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating account"})
-        return
-    }
-
-    user := models.User{
-        FirstName: body.FirstName,
-        LastName:  body.LastName,
-        Email:     body.Email,
-        Password:  string(hash),
-        ClientID:  clientModel.ID,
-    }
-
-    result := initializers.DB.Create(&user)
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating client"})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
-}
-
 // UserLogin godoc
 // @Summary User login
 // @Description Logs in a user and returns a JWT token
@@ -204,12 +144,6 @@ func UserUpdatePassword(c *gin.Context) {
     c.JSON(http.StatusOK, UserPasswordUpdateResponse{Message: "Password updated successfully"})
 }
 
-type UserSignupRequest struct {
-    FirstName string `json:"firstname" binding:"required"`
-    LastName  string `json:"lastname" binding:"required"`
-    Email     string `json:"email" binding:"required,email"`
-    Password  string `json:"password" binding:"required"`
-}
 type UserLoginRequest struct {
     Email    string `json:"email" binding:"required,email"`
     Password string `json:"password" binding:"required"`
