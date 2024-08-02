@@ -12,7 +12,7 @@ func SetDefaultClientAdvancedConfig(clientId uuid.UUID) models.ClientAdvancedCon
 		ClientID: clientId,
 		CorsAllowedOrigins:    pq.StringArray{""},
 		JWTExpiryTime:         3600,
-		RefreshTokenEnabled:   true,
+		RefreshTokenEnabled:   false,
 		RefreshTokenExpiryTime: 7200,
 		AllowJWTCustomClaims:  false,  
 		UseAdditionalProperties: false,    

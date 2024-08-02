@@ -28,6 +28,15 @@ type UserClaims struct {
 	ClientId uuid.UUID `json:"client"`
     jwt.RegisteredClaims
 }
+type UserRefreshTokenClaims struct {
+	Email string `json:"email"`
+	Role string `json:"role"`
+    FirstName string `json:"firstname"`
+    LastName string `json:"lastname"`
+	ClientId uuid.UUID `json:"client"`
+	Type string `json:"type"`
+    jwt.RegisteredClaims
+}
 var jwtKey = []byte(os.Getenv("JWT_KEY"))
 
 
@@ -110,6 +119,49 @@ func ParseUserJWT(tokenString string) (*UserClaims, error) {
     }
 
     if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {
+        return claims, nil
+    } else {
+        return nil, errors.New("invalid token")
+    }
+}
+
+func GenerateRefreshJWT(user models.User, role string) (string, error) {
+    expirationTime := time.Now().Add(48 * time.Hour) 
+    claims := &UserRefreshTokenClaims{
+        Email: user.Email,
+		Role: role,
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+		ClientId: user.ClientID,
+        Type: "refresh_token",
+        RegisteredClaims: jwt.RegisteredClaims{
+            ExpiresAt: jwt.NewNumericDate(expirationTime),
+        },
+    }
+
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+    tokenString, err := token.SignedString(jwtKey)
+    if err != nil {
+        return "", err
+    }
+
+    return tokenString, nil
+}
+
+func ParseUserRefreshJWT(tokenString string) (*UserRefreshTokenClaims, error) {
+    claims := &UserRefreshTokenClaims{}
+    token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+            return nil, jwt.NewValidationError("unexpected signing method", jwt.ValidationErrorSignatureInvalid)
+        }
+        return jwtKey, nil
+    })
+
+    if err != nil {
+        return nil, err
+    }
+
+    if claims, ok := token.Claims.(*UserRefreshTokenClaims); ok && token.Valid {
         return claims, nil
     } else {
         return nil, errors.New("invalid token")

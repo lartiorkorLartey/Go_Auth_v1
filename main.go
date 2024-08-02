@@ -62,6 +62,8 @@ func main() {
 	r.POST("/user/update-password", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UserUpdatePassword)
 	r.GET("/user/profile",middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.GetUserProfile)
 	r.PUT("/user/profile", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UpdateUserProfile)
+	r.POST("user/refresh-token", middlewares.APNAuthMiddleware(),controllers.RefreshToken)
+
 
 	
 
