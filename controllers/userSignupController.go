@@ -55,7 +55,11 @@ func UserSignup(c *gin.Context) {
 		Email:     body.Email,
 		Password:  string(hash),
 		ClientID:  clientModel.ID,
-		AdditionalProperties: models.AdditionalProperties{
+
+	}
+
+	if body.AdditionalProperties != nil {
+		user.AdditionalProperties = models.AdditionalProperties{
 			PhoneNumber:    body.AdditionalProperties.PhoneNumber,
 			ProfilePicture: body.AdditionalProperties.ProfilePicture,
 			DateOfBirth:    body.AdditionalProperties.DateOfBirth,
@@ -69,8 +73,9 @@ func UserSignup(c *gin.Context) {
 			},
 			LastLogin: &now,
 			Role:      body.AdditionalProperties.Role,
-		},
+		}
 	}
+	
 
 	result := initializers.DB.Create(&user)
 	if result.Error != nil {
