@@ -55,14 +55,28 @@ func UserLogin(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email or password"})
         return
     }
-
+    
     token, err := utils.GenerateUserJWT(user, "User")
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
         return
     }
+    
+        response := gin.H{
+            "message": "Login successful",
+            "login_token": token,
+        }
 
-    c.JSON(http.StatusOK, gin.H{"message": "Login successful", "login_token": token})
+    if clientModel.ClientAdvancedConfig.RefreshTokenEnabled {
+        refreshToken, err := utils.GenerateRefreshJWT(user, "User")
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate refresh token"})
+            return
+        }
+        response["refresh_token"] = refreshToken
+    }
+
+    c.JSON(http.StatusOK, response)
 }
 
 // ValidateUser godoc
