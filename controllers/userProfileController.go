@@ -9,19 +9,18 @@ import (
 	"github.com/google/uuid"
 )
 
-// GetUserProfile returns the user properties except the password
 // @Summary Get user profile
-// @Description Returns the user properties except the password. Includes additional properties if the client has use_additional_properties set to true.
-// @Tags user
+// @Description Returns the user profile. Includes additional properties only if the client has use_additional_properties set to true. The id is not required in the request as it is derived from the authenticated user's context.
+// @Tags user profile
 // @Accept  json
 // @Produce  json
-// @Param id path string true "User ID"
 // @Success 200 {object} UserProfileResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /user/profile/{id} [get]
+// @Router /user/profile [get]
+
 func GetUserProfile(c *gin.Context) {
 	client, exists := c.Get("client")
 	if !exists {
@@ -60,7 +59,7 @@ func GetUserProfile(c *gin.Context) {
 		DateOfBirth:    userModel.AdditionalProperties.DateOfBirth,
 		Gender:         userModel.AdditionalProperties.Gender,
 		LastLogin:      userModel.AdditionalProperties.LastLogin,
-		Roles:          userModel.AdditionalProperties.Roles,
+		Role:          userModel.AdditionalProperties.Role,
 	}
 
 	address := Address{
@@ -80,13 +79,11 @@ func GetUserProfile(c *gin.Context) {
 }
 
 
-// UpdateUserProfile updates the user profile properties except the password
 // @Summary Update user profile
-// @Description Updates the user profile properties except the password. Includes additional properties if the client has use_additional_properties set to true.
-// @Tags user
+// @Description Updates the user profile. Response includes additional properties only if the client has use_additional_properties set to true. The id is not required in the request as it is derived from the authenticated user's context.
+// @Tags user profile
 // @Accept  json
 // @Produce  json
-// @Param id path string true "User ID"
 // @Param body body UpdateUserProfileRequest true "Update profile details"
 // @Success 200 {object} UserProfileResponse
 // @Failure 400 {object} ErrorResponse
@@ -163,7 +160,7 @@ func UpdateUserProfile(c *gin.Context) {
 		DateOfBirth:    user.AdditionalProperties.DateOfBirth,
 		Gender:         user.AdditionalProperties.Gender,
 		LastLogin:      user.AdditionalProperties.LastLogin,
-		Roles:          user.AdditionalProperties.Roles,
+		Role:          user.AdditionalProperties.Role,
 	}
 
 	address := Address{

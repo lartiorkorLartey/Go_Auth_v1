@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
@@ -30,7 +29,7 @@ type AdditionalProperties struct {
 	Gender         *string    `gorm:"type:varchar(20)"`
 	Address        Address    `gorm:"embedded"`
 	LastLogin      *time.Time `gorm:"type:timestamp"`
-	Roles          pq.StringArray   `gorm:"type:varchar(100)[]"`
+	Role         *string        `gorm:"type:varchar(20)"`
 }
 
 type Address struct {
@@ -44,3 +43,4 @@ type Address struct {
 func (User) TableName() string {
     return "users"
 }
+

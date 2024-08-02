@@ -8,7 +8,6 @@ import (
 	"github.com/InnocentEdem/Go_Auth_v1/initializers"
 	"github.com/InnocentEdem/Go_Auth_v1/models"
 	"github.com/gin-gonic/gin"
-	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -69,7 +68,7 @@ func UserSignup(c *gin.Context) {
 				Country:    body.AdditionalProperties.Address.Country,
 			},
 			LastLogin: &now,
-			Roles:      pq.StringArray(body.AdditionalProperties.Roles),
+			Role:      body.AdditionalProperties.Role,
 		},
 	}
 
@@ -96,7 +95,7 @@ type AdditionalProperties struct {
 	DateOfBirth    *time.Time `json:"date_of_birth,omitempty"`
 	Gender         *string    `json:"gender,omitempty"`
 	Address        *Address   `json:"address,omitempty"`
-	Roles          pq.StringArray   `json:"roles,omitempty"`
+	Role           *string    `json:"role,omitempty"`
 	LastLogin      *time.Time `json:"last_login,omitempty"`
 
 }

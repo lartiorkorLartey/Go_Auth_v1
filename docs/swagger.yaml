@@ -1,8 +1,49 @@
 basePath: /
 definitions:
+  controllers.AdditionalProperties:
+    properties:
+      address:
+        $ref: '#/definitions/controllers.Address'
+      date_of_birth:
+        type: string
+      gender:
+        type: string
+      last_login:
+        type: string
+      phone_number:
+        type: string
+      profile_picture:
+        type: string
+      role:
+        type: string
+    type: object
+  controllers.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      postal_code:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+    type: object
   controllers.ErrorResponse:
     properties:
       error:
+        type: string
+    type: object
+  controllers.UpdateUserProfileRequest:
+    properties:
+      additional_properties:
+        $ref: '#/definitions/models.AdditionalProperties'
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
         type: string
     type: object
   controllers.UserLoginRequest:
@@ -37,20 +78,35 @@ definitions:
       message:
         type: string
     type: object
-  controllers.UserSignupRequest:
+  controllers.UserProfileResponse:
     properties:
+      additional_properties:
+        $ref: '#/definitions/controllers.AdditionalProperties'
       email:
         type: string
-      firstname:
+      first_name:
         type: string
-      lastname:
+      id:
+        type: string
+      last_name:
+        type: string
+    type: object
+  controllers.UserSignupRequest:
+    properties:
+      additional_properties:
+        $ref: '#/definitions/controllers.AdditionalProperties'
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
         type: string
       password:
         type: string
     required:
     - email
-    - firstname
-    - lastname
+    - first_name
+    - last_name
     - password
     type: object
   controllers.UserSignupResponse:
@@ -66,6 +122,36 @@ definitions:
   controllers.ValidateUserSuccessResponse:
     properties:
       message:
+        type: string
+    type: object
+  models.AdditionalProperties:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      dateOfBirth:
+        type: string
+      gender:
+        type: string
+      lastLogin:
+        type: string
+      phoneNumber:
+        type: string
+      profilePicture:
+        type: string
+      role:
+        type: string
+    type: object
+  models.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      postalCode:
+        type: string
+      state:
+        type: string
+      street:
         type: string
     type: object
 externalDocs:
@@ -119,6 +205,46 @@ paths:
       summary: User login
       tags:
       - auth
+  /user/profile:
+    put:
+      consumes:
+      - application/json
+      description: Updates the user profile. Response includes additional properties
+        only if the client has use_additional_properties set to true. The id is not
+        required in the request as it is derived from the authenticated user's context.
+      parameters:
+      - description: Update profile details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateUserProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.UserProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Update user profile
+      tags:
+      - user profile
   /user/signup:
     post:
       consumes:
