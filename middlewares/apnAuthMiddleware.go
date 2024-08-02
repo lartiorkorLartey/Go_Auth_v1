@@ -18,12 +18,12 @@ func APNAuthMiddleware() gin.HandlerFunc {
             return
         }
 
-        var client models.Client
-        if err := initializers.DB.Where("apn = ?", apnHeader).First(&client).Error; err != nil {
-            c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid APN"})
-            c.Abort()
-            return
-        }
+		var client models.Client
+		if err := initializers.DB.Preload("ClientAdvancedConfig").Where("apn = ?", apnHeader).First(&client).Error; err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid APN"})
+			c.Abort()
+			return
+		}
 
         c.Set("client", client)
         c.Next()

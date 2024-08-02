@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func ClientSignup(c *gin.Context) {
@@ -45,18 +46,27 @@ func ClientSignup(c *gin.Context) {
 		Email:     body.Email,
 		Password:  string(hash),
 	}	
-	
-	result := initializers.DB.Create(&client)
 
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Error creating client",
-		})
+    err = initializers.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&client).Error; err != nil {
+			return err
+		}
+
+		clientConfig := utils.SetDefaultClientAdvancedConfig(client.ID)
+
+		if err := tx.Create(&clientConfig).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to sign up client"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": " User created successfully",
+		"message": " Client created successfully",
 	})
 }
 
@@ -238,6 +248,36 @@ func HandleFeatureRequest(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Feature request email sent successfully"})
 }
+
+func GetClient(c *gin.Context) {
+	client, exists := c.Get("client")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Client information missing"})
+		return
+	}
+
+	clientModel, ok := client.(models.Client)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving client information"})
+		return
+	}
+
+	clientResponse := ClientResponse{
+		ID:   clientModel.ID,
+		FirstName: clientModel.FirstName,
+		LastName: clientModel.LastName,
+		ClientAdvancedConfig: ClientAdvancedConfigResponse{
+			CorsAllowedOrigins:    clientModel.ClientAdvancedConfig.CorsAllowedOrigins,
+			JWTExpiryTime:         clientModel.ClientAdvancedConfig.JWTExpiryTime,
+			RefreshTokenEnabled:   clientModel.ClientAdvancedConfig.RefreshTokenEnabled,
+			RefreshTokenExpiryTime: clientModel.ClientAdvancedConfig.RefreshTokenExpiryTime,
+			AllowJWTCustomClaims:  clientModel.ClientAdvancedConfig.AllowJWTCustomClaims,
+			UseAdditionalProperties:  clientModel.ClientAdvancedConfig.UseAdditionalProperties,
+		},
+	}
+
+	c.JSON(http.StatusOK, clientResponse)
+}
 type ClientPasswordUpdateRequest struct {
     OldPassword string `json:"old_password" binding:"required"`
     NewPassword string `json:"new_password" binding:"required"`
@@ -264,3 +304,11 @@ type FeatureRequest struct {
     FeatureName        string `json:"feature_name" binding:"required"`
     FeatureDescription string `json:"feature_description" binding:"required"`
 }
+
+type ClientResponse struct {
+	ID                   uuid.UUID             `json:"id"`
+	FirstName                 string                `json:"firstname"`
+	LastName                 string                `json:"lastname"`
+	ClientAdvancedConfig ClientAdvancedConfigResponse `json:"client_advanced_config"`
+}
+

@@ -1,21 +1,20 @@
 package main
 
 import (
+	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-    swaggerFiles "github.com/swaggo/files"
 
 	"github.com/InnocentEdem/Go_Auth_v1/controllers"
+	_ "github.com/InnocentEdem/Go_Auth_v1/docs"
 	"github.com/InnocentEdem/Go_Auth_v1/initializers"
 	"github.com/InnocentEdem/Go_Auth_v1/middlewares"
 	"github.com/gin-gonic/gin"
-	_ "github.com/InnocentEdem/Go_Auth_v1/docs" 
-
 )
 
 func init(){
 	initializers.LoadEnvironment()
 	initializers.ConnectDB()
-	initializers.SyncDatabase()
+	// initializers.SyncDatabase()
 }
 
 // @title           Swagger Example API
@@ -51,11 +50,18 @@ func main() {
 	r.GET("/client-apn",middlewares.ClientAuthMiddleware(), controllers.GetClientAPN )
 	r.POST("/delete-user",middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient )
 	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
+	r.GET("/config/:id",middlewares.ClientAuthMiddleware(), controllers.GetClientAdvancedConfig)
+	r.PUT("/config",middlewares.ClientAuthMiddleware(), controllers.UpdateClientAdvancedConfigHandler)
+	r.GET("/client",middlewares.ClientAuthMiddleware(), controllers.GetClient)
+
 	
 	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
 	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)
 	r.GET("/user/validate", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.ValidateUser)
 	r.POST("/user/update-password", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UserUpdatePassword)
+	r.GET("/user/profile",middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.GetUserProfile)
+	r.PUT("/user/profile", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UpdateUserProfile)
+
 	
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
