@@ -40,8 +40,8 @@ func init(){
 func main() {
 	r := gin.Default()
 
+	r.Use(middlewares.CORSMiddleware())
 	clientRoutes := r.Group("/")
-	clientRoutes.Use(middlewares.CORSMiddleware())
 	{
 		clientRoutes.POST("/create-client", controllers.ClientSignup)
 		clientRoutes.POST("/client-login", controllers.ClientLogin)
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	userRoutes := r.Group("/user")
-	userRoutes.Use(middlewares.CORSMiddleware(),middlewares.APNAuthMiddleware())
+	userRoutes.Use(middlewares.APNAuthMiddleware())
 	{
 		userRoutes.POST("/signup", controllers.UserSignup)
 		userRoutes.POST("/login", controllers.UserLogin)
