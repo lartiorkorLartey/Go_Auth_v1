@@ -39,35 +39,36 @@ func init(){
 
 func main() {
 	r := gin.Default()
-	r.Use(middlewares.CORSMiddleware())
 
-	
-	r.POST("/create-client", controllers.ClientSignup)
-	r.POST("/client-login", controllers.ClientLogin)
-	r.POST("/generate-apn",middlewares.ClientAuthMiddleware(), controllers.GenerateAPN )
-	r.POST("/invalidate-apn",middlewares.ClientAuthMiddleware(), controllers.InvalidateAPN )
-	r.GET("/all-users",middlewares.ClientAuthMiddleware(), controllers.GetUsersByClient )
-	r.GET("/client-apn",middlewares.ClientAuthMiddleware(), controllers.GetClientAPN )
-	r.POST("/delete-user",middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient )
-	r.POST("/feature-request",middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
-	r.GET("/config",middlewares.ClientAuthMiddleware(), controllers.GetClientAdvancedConfig)
-	r.PUT("/config",middlewares.ClientAuthMiddleware(), controllers.UpdateClientAdvancedConfigHandler)
-	r.GET("/client",middlewares.ClientAuthMiddleware(), controllers.GetClient)
+	clientRoutes := r.Group("/")
+	clientRoutes.Use(middlewares.CORSMiddleware())
+	{
+		clientRoutes.POST("/create-client", controllers.ClientSignup)
+		clientRoutes.POST("/client-login", controllers.ClientLogin)
+		clientRoutes.POST("/generate-apn", middlewares.ClientAuthMiddleware(), controllers.GenerateAPN)
+		clientRoutes.POST("/invalidate-apn", middlewares.ClientAuthMiddleware(), controllers.InvalidateAPN)
+		clientRoutes.GET("/all-users", middlewares.ClientAuthMiddleware(), controllers.GetUsersByClient)
+		clientRoutes.GET("/client-apn", middlewares.ClientAuthMiddleware(), controllers.GetClientAPN)
+		clientRoutes.POST("/delete-user", middlewares.ClientAuthMiddleware(), controllers.DeleteUserByClient)
+		clientRoutes.POST("/feature-request", middlewares.ClientAuthMiddleware(), controllers.CreateFeatureRequest)
+		clientRoutes.GET("/config", middlewares.ClientAuthMiddleware(), controllers.GetClientAdvancedConfig)
+		clientRoutes.PUT("/config", middlewares.ClientAuthMiddleware(), controllers.UpdateClientAdvancedConfigHandler)
+		clientRoutes.GET("/client", middlewares.ClientAuthMiddleware(), controllers.GetClient)
+		clientRoutes.POST("/update-password", middlewares.ClientAuthMiddleware(), controllers.ClientUpdatePassword)
+		clientRoutes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	}
 
-	r.POST("/update-password",middlewares.ClientAuthMiddleware(), controllers.ClientUpdatePassword)
-	
-	r.POST("/user/signup", middlewares.APNAuthMiddleware(), controllers.UserSignup)
-	r.POST("/user/login", middlewares.APNAuthMiddleware(), controllers.UserLogin)
-	r.GET("/user/validate", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.ValidateUser)
-	r.POST("/user/update-password", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UserUpdatePassword)
-	r.GET("/user/profile",middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.GetUserProfile)
-	r.PUT("/user/profile", middlewares.APNAuthMiddleware(), middlewares.UserAuthMiddleware(), controllers.UpdateUserProfile)
-	r.POST("user/refresh-token", middlewares.APNAuthMiddleware(),controllers.RefreshToken)
+	userRoutes := r.Group("/user")
+	userRoutes.Use(middlewares.CORSMiddleware(),middlewares.APNAuthMiddleware())
+	{
+		userRoutes.POST("/signup", controllers.UserSignup)
+		userRoutes.POST("/login", controllers.UserLogin)
+		userRoutes.GET("/validate", middlewares.UserAuthMiddleware(), controllers.ValidateUser)
+		userRoutes.POST("/update-password", middlewares.UserAuthMiddleware(), controllers.UserUpdatePassword)
+		userRoutes.GET("/profile", middlewares.UserAuthMiddleware(), controllers.GetUserProfile)
+		userRoutes.PUT("/profile", middlewares.UserAuthMiddleware(), controllers.UpdateUserProfile)
+		userRoutes.POST("/refresh-token", controllers.RefreshToken)
+	}
 
-
-	
-
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	
 	r.Run()
 }

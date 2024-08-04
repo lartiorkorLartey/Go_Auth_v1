@@ -63,8 +63,8 @@ func GenerateJWT(client models.Client, role string) (string, error) {
     return tokenString, nil
 }
 
-func GenerateUserJWT(user models.User, role string) (string, error) {
-    expirationTime := time.Now().Add(2 * time.Hour) 
+func GenerateUserJWT(user models.User,client models.Client, role string) (string, error) {
+    expirationTime := time.Now().Add(time.Duration(client.ClientAdvancedConfig.JWTExpiryTime)) 
     claims := &UserClaims{
         Email: user.Email,
 		Role: role,
@@ -125,8 +125,8 @@ func ParseUserJWT(tokenString string) (*UserClaims, error) {
     }
 }
 
-func GenerateRefreshJWT(user models.User, role string) (string, error) {
-    expirationTime := time.Now().Add(48 * time.Hour) 
+func GenerateRefreshJWT(user models.User,client models.Client, role string) (string, error) {
+    expirationTime := time.Now().Add(time.Duration(client.ClientAdvancedConfig.RefreshTokenExpiryTime)) 
     claims := &UserRefreshTokenClaims{
         Email: user.Email,
 		Role: role,

@@ -17,6 +17,11 @@ require (
 )
 
 require (
+	github.com/gin-contrib/cors v1.7.2 // indirect
+	github.com/rs/cors v1.11.0 // indirect
+)
+
+require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/bytedance/sonic v1.12.0 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect

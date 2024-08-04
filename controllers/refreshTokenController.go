@@ -61,12 +61,12 @@ func RefreshToken(c *gin.Context) {
         return
     }
 
-    newToken, err := utils.GenerateUserJWT(userData, "User")
+    newToken, err := utils.GenerateUserJWT(userData,clientModel, "User")
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate new token"})
         return
     }
-	newRefreshToken, err := utils.GenerateRefreshJWT(userData, "User")
+	newRefreshToken, err := utils.GenerateRefreshJWT(userData,clientModel, "User")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate new refresh token"})
 		return
