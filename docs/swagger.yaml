@@ -35,6 +35,20 @@ definitions:
       error:
         type: string
     type: object
+  controllers.RefreshTokenErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  controllers.RefreshTokenSuccessResponse:
+    properties:
+      login_token:
+        type: string
+      message:
+        type: string
+      refresh_token:
+        type: string
+    type: object
   controllers.UpdateUserProfileRequest:
     properties:
       additional_properties:
@@ -295,27 +309,19 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/controllers.RefreshTokenSuccessResponse'
         "400":
           description: Bad Request
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/controllers.RefreshTokenErrorResponse'
         "401":
           description: Unauthorized
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/controllers.RefreshTokenErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/controllers.RefreshTokenErrorResponse'
       summary: Refresh JWT
       tags:
       - auth
