@@ -15,10 +15,10 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param   refresh_token  body  string  true  "Refresh Token"
-// @Success 200 {object} map[string]string
-// @Failure 400 {object} map[string]string
-// @Failure 401 {object} map[string]string
-// @Failure 500 {object} map[string]string
+// @Success 200 {object} RefreshTokenSuccessResponse
+// @Failure 400 {object} RefreshTokenErrorResponse
+// @Failure 401 {object} RefreshTokenErrorResponse
+// @Failure 500 {object} RefreshTokenErrorResponse
 // @Router /user/refresh-token [post]
 func RefreshToken(c *gin.Context) {
     var body struct {
@@ -68,16 +68,23 @@ func RefreshToken(c *gin.Context) {
     }
 	newRefreshToken, err := utils.GenerateRefreshJWT(userData,clientModel, "User")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate new refresh token"})
+		c.JSON(http.StatusInternalServerError, RefreshTokenErrorResponse{Error: "Could not generate new refresh token"})
 		return
 	}
 
-	response := gin.H{
-        "message": "Successful",
-        "login_token": newToken,
-        "refresh_token": newRefreshToken,
-
+	response := RefreshTokenSuccessResponse{
+        Message: "Successful",
+        LoginToken: newToken,
+        RefreshToken: newRefreshToken,
     }
 
     c.JSON(http.StatusOK, response)
+}
+type RefreshTokenSuccessResponse struct{
+    Message string `json:"message"`
+    LoginToken string `json:"login_token"`
+    RefreshToken string `json:"refresh_token"`
+}
+type RefreshTokenErrorResponse struct{
+    Error string `json:"error"`
 }
