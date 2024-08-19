@@ -14,7 +14,7 @@ import (
 func init(){
 	initializers.LoadEnvironment()
 	initializers.ConnectDB()
-	// initializers.SyncDatabase()
+	initializers.SyncDatabase()
 }
 
 // @title           Gatekeeper Pro API
