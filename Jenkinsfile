@@ -34,9 +34,6 @@ pipeline {
     
     stages{
         stage('Build Application Image') {
-            when {
-                branch 'main'
-            }
             steps {
                 script {
                     buildDockerImage(imageTag: imageTag, buildContext: '.')
@@ -45,9 +42,6 @@ pipeline {
         }
 
         stage('Push to Registry') {
-            when {
-                branch 'main'
-            }
             steps {
                 script {
                     pushDockerImage(image: imageTag, registry: imageRegistry, awsCreds: awsCreds)
@@ -56,18 +50,12 @@ pipeline {
         }
 
         stage('Prepare To Deploy') {
-            when {
-                branch 'main'
-            }
             steps {
                 prepareToDeploy(s3FileName: s3FileName, appName: appName, bucketName: bucketName)
             }
         }
 
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
             steps {
                 script {
                     makeDeploymentECR(environment: currentBranch, deploymentConfig: deployConfig, awsCreds: awsCreds)
@@ -76,9 +64,6 @@ pipeline {
         }
 
         stage('Clean Up Build') {
-            when{
-                branch 'main'
-            }
             steps {
                 script {
                     sh "docker rmi ${imageTag}"
